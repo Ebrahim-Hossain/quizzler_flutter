@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:quizzler_flutter/question.dart';
 
 class QuizBrain {
@@ -31,6 +33,21 @@ class QuizBrain {
         'In West Virginia, USA, if you accidentally hit an animal with your car, you are free to take it home to eat.',
         true),
   ];
+
+   bool isFinished() {
+    if (_questionsIndex < _questionList.length -1 ) {
+     log('false');
+     return false;
+    }else {
+     log('true');
+      return true;
+    }
+   }
+
+   void reset() {
+    _questionsIndex = 0;
+   }
+
 
    void nextQuestion() {
      if (_questionsIndex < _questionList.length - 1) {

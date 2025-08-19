@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:quizzler_flutter/quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,10 +10,48 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   List<Widget> scoreKeeper = [];
 
+  void checkAnswer({required bool pickedAnswer}) {
+    bool correctAnswer = quizBrain.getQuestionAnswer();
+    setState(() {
+      if(quizBrain.isFinished() == true) {
+        Alert(
+          context: context,
+          type: AlertType.error,
+          title: "Quiz is Over",
+          desc: "Please reset the quiz.Thank you.",
+          buttons: [
+            DialogButton(
+              onPressed: () => Navigator.pop(context),
+              width: 120,
+              child: Text(
+                "Restart",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            )
+          ],
+        ).show();
+        quizBrain.reset();
+        scoreKeeper = [];
+      } else{
+
+      if (correctAnswer == pickedAnswer) {
+        scoreKeeper.add(Icon(Icons.check, color: Colors.green),);
+      } else {
+        scoreKeeper.add(Icon(Icons.close, color: Colors.red),);
+      }
+
+      quizBrain.nextQuestion();
+      }
+      // if (questionsIndex == quizBrain.questionList.length) {
+      //   questionsIndex = 0;
+      // }
+    });
+  }
+
   QuizBrain quizBrain = QuizBrain();
+
 
 
   @override
@@ -48,19 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   margin: EdgeInsets.symmetric(horizontal: 20),
                   child: ElevatedButton(
                     onPressed: () {
-                      bool correctAnswer = quizBrain.getQuestionAnswer();
-                      if (correctAnswer == true) {
-                        log('you got it correct');
-                      } else {
-                        log('you got it wrong');
-                      }
-
-                      setState(() {
-                        quizBrain.nextQuestion();
-                        // if (questionsIndex == quizBrain.questionList.length) {
-                        //   questionsIndex = 0;
-                        // }
-                      });
+                      checkAnswer(pickedAnswer: true);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
@@ -83,19 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   margin: EdgeInsets.symmetric(horizontal: 20),
                   child: ElevatedButton(
                     onPressed: () {
-                      bool correctAnswer = quizBrain.getQuestionAnswer();
-                      if (correctAnswer == false) {
-                        log('you got it correct');
-                      } else {
-                        log('you got it wrong');
-                      }
-
-                      setState(() {
-                        quizBrain.nextQuestion();
-                        // if (questionsIndex == quizBrain.questionList.length) {
-                        //   questionsIndex = 0;
-                        // }
-                      });
+                      checkAnswer(pickedAnswer: false);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
@@ -114,10 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Padding(
                 padding: const EdgeInsets.all(12),
                 child: Row(
-                  children: [
-                    Icon(Icons.check, color: Colors.green),
-                    Icon(Icons.close, color: Colors.red),
-                  ],
+                    children: scoreKeeper
                 ),
               ),
             ],

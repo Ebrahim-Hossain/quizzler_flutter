@@ -2,7 +2,7 @@
 class Question {
 
   String questionText;
-  bool questionAnswer;
+  bool questionAnswer; 
 
   Question(this.questionText, this.questionAnswer);
 }
