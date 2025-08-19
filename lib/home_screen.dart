@@ -16,22 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
     bool correctAnswer = quizBrain.getQuestionAnswer();
     setState(() {
       if(quizBrain.isFinished() == true) {
-        Alert(
-          context: context,
-          type: AlertType.error,
-          title: "Quiz is Over",
-          desc: "Please reset the quiz.Thank you.",
-          buttons: [
-            DialogButton(
-              onPressed: () => Navigator.pop(context),
-              width: 120,
-              child: Text(
-                "Restart",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-            )
-          ],
-        ).show();
+        Alert(context: context, title: "Completed", desc: "Restart the quiz.").show();
         quizBrain.reset();
         scoreKeeper = [];
       } else{
