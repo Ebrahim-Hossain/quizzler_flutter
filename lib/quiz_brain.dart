@@ -36,10 +36,8 @@ class QuizBrain {
 
    bool isFinished() {
     if (_questionsIndex < _questionList.length -1 ) {
-     log('false');
      return false;
     }else {
-     log('true');
       return true;
     }
    }
